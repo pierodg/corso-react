@@ -1,0 +1,12 @@
+.stock {
+    background-color: #212121;
+}
+
+.row {
+    display: flex;
+    justify-content: center;
+}
+.col {
+    width: 100%;
+    align-self: center;
+}

@@ -6,8 +6,6 @@ import PropTypes from "prop-types";
 
 const FiglioStock = (props) => {
 
-   
-     
     return (
         <div>
             <h1>Io sono il Figlio {props.nome}</h1>
