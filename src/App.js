@@ -2,15 +2,15 @@ import './App.css'
 import React, { Component } from 'react'
 import Stock from './Stock'
 
-
-
 class App extends Component {
   
   constructor(props) {
     super(props);
-    this.state = { listastock: [{nome: 'APPL', quotazione: 250}], showMsg: false, maggiorenne: ''};
-    console.log('1g) GENITORE: Creo istanza');
+    this.state = {id: 1, listastock: [{id: 0, nome: 'APPL', quotazione: 250}], showMsg: false, maggiorenne: ''};
 
+    //this.setState({listastock: [{id: this.state.id}]}); Da verificare in seguito con id dinamico
+
+    console.log('1g) GENITORE: Creo istanza');
   } 
 
   componentDidMount() {
@@ -20,9 +20,21 @@ class App extends Component {
     //this.setState((props, state) => ({listastock: stock})); 
   }
 
+  componentWillUnmount() {
+    console.log('5g) - Componente App Distrutto');
+  }
+
+  incrementID = () => {
+        this.setState((state, props) =>
+            ({id: this.state.id+1}));
+    }
+
   aggiornoStock = (e) => {
     e.preventDefault();
-    const newstock = {nome: "AMZN", quotazione: 1200};
+
+    this.incrementID();
+
+    const newstock = {id: this.state.id, nome: "AMZN", quotazione: 1200};
     this.setState({listastock: [newstock]});
   }
 
@@ -34,7 +46,7 @@ class App extends Component {
     alert('Dato passato al componente genitore ' + d)
   }
 
- render () {
+  render () {
     console.log('2g) GENITORE render')
   
     /* 
@@ -51,14 +63,12 @@ class App extends Component {
   )*/
 
   return (
-    <div className="App">
+    <div className="App container-fluid">
     <button onClick={this.aggiornoStock}>Nuovo stock</button>
       <p>Applicazione Stock Quote</p>
-       { this.state.listastock.map(el => <Stock datistock={el}/>) }
+       { this.state.listastock.map((el, i) => <Stock key={el.id} datistock={el} />) }
       
       
-
-
       {/* 
        <SearchForm onSubmit={this.mostroDatiForm}/>
        <SearchFormA />
@@ -71,7 +81,6 @@ class App extends Component {
     </div>
   );
  }
-
 }
 
 export default App;

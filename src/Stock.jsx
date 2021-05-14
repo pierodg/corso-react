@@ -4,34 +4,55 @@ import './Stock.css';
 export class Stock extends Component {
     constructor(props) {
         super(props);
-        const {nome, quotazione} = this.props.datistock;
-        this.state = {quotazione, eta: this.props.eta, start: false};
+        const {id, nome, quotazione} = this.props.datistock;
+        this.state = {id, nome, quotazione, eta: this.props.eta, start: false};
         console.log('1f) FIGLIO - Creo istanza ' + nome);
+
 
         this.hobby = ['Calcio', 'Tennis'];
     }
 
-    componentDidMount() {
-        console.log('3f) FIGLIO - DidMount ' + this.props.datistock.nome);
+    static getDerivedStateFromProps(np, ns) {
+     /*   console.log('1fa) Figlio check props e state');
+        if(np.datistock.quotazione !== ns.quotazione && np.datistock.nome !== ns.nome) {
+            return {
+                nome: np.datistock.nome,
+                quotazione: np.datistock.quotazione
+                };
+            } else {
+                return null;
+            } */
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidMount() {
+        console.log('3f) FIGLIO - DidMount ' + this.props.datistock.nome);
+
+    }
+
+    componentDidUpdate(prevProps, prevState) {
         console.log('4f) FIGLIO - DidUpdate ' + this.props.datistock.nome);
+
+        if(prevProps.datistock.quotazione !== this.props.datistock.quotazione) {
+            this.setState((state, props) => ({ quotazione: props.datistock.quotazione }))
+
+            }
     }
     
+    componentWillUnmount() {
+        console.log("RIP " + this.state.id);
+    }
+  
     aggiornoStock = () => {
         this.setState((state, props) =>
             ({quotazione: state.quotazione + 10}));
     }
 
-
     aggiornoEta = () => {
-        if(this.state.start) {
-
+        if(this.state.start) {  
             this.setState((state, props) => ({eta: state.eta +1}))
-                if (this.state.eta >= 18) {
-                    this.props.showEta(this.props.nome); 
-                }
+            if (this.state.eta >= 18) {
+                this.props.showEta(this.props.nome); 
+            }
         } 
     }
 
@@ -44,10 +65,11 @@ export class Stock extends Component {
             }, 3000);
         } 
         else this.setState({start: false});
-        }
+    }
 
     render() {
-        console.log('2f) FIGLIO - Render ' + this.props.datistock.nome);
+        console.log('2f) FIGLIO - Render ' + this.props.datistock.nome + " ID: " + this.props.datistock.id);
+        
 
         /*
         const { nome, fondatore} = this.props;
@@ -79,7 +101,7 @@ export class Stock extends Component {
                             <p>HH:MM:SS</p>
                         </div>
                         <div className="col">
-                            <h2>Var</h2>
+                            <h2>Var {this.state.id}</h2>
                             <p>%</p>
                         </div>
                          <div className="col">
